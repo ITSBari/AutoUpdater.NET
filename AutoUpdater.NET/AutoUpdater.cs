@@ -351,6 +351,9 @@ public static class AutoUpdater
             }
             catch (Exception exception)
             {
+                // FHorse --
+                Running = false;
+                // ---------
                 ShowError(exception);
             }
         }
@@ -702,7 +705,17 @@ public static class AutoUpdater
 
         try
         {
-            return downloadDialog.ShowDialog(_owner).Equals(DialogResult.OK);
+            // FHorse --
+            Thread t = new Thread(() => Application.Run(downloadDialog));
+
+            t.Start();
+            while (!DownloadUpdateDialog.ended)
+            {
+                Thread.Sleep(100);
+            }
+            return DownloadUpdateDialog.dresult == DialogResult.OK;
+            // ---------
+            //return downloadDialog.ShowDialog(_owner).Equals(DialogResult.OK);
         }
         catch (TargetInvocationException)
         {

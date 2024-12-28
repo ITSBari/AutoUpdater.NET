@@ -19,6 +19,11 @@ internal partial class DownloadUpdateDialog : Form
     private readonly UpdateInfoEventArgs _args;
 
     private DateTime _startedAt;
+    
+    // FHorse --
+    public static DialogResult dresult;
+    public static bool ended;
+    // ---------
 
     private string _tempFile;
 
@@ -26,6 +31,11 @@ internal partial class DownloadUpdateDialog : Form
 
     public DownloadUpdateDialog(UpdateInfoEventArgs args)
     {
+        // FHorse --
+        dresult = DialogResult.None;
+        ended = false;
+        // ---------
+
         InitializeComponent();
         TopMost = AutoUpdater.TopMost;
 
@@ -244,6 +254,10 @@ internal partial class DownloadUpdateDialog : Form
 
             try
             {
+                // FHorse --
+                DialogResult = DialogResult.OK;
+                FHClose();
+                // ---------
                 Process.Start(processStartInfo);
             }
             catch (Win32Exception exception)
@@ -267,6 +281,9 @@ internal partial class DownloadUpdateDialog : Form
         {
             DialogResult = _webClient == null ? DialogResult.Cancel : DialogResult.OK;
             FormClosing -= DownloadUpdateDialog_FormClosing;
+            // FHorse --
+            FHClose();
+            // ---------
             Close();
         }
     }
@@ -321,6 +338,9 @@ internal partial class DownloadUpdateDialog : Form
     {
         if (AutoUpdater.Mandatory && AutoUpdater.UpdateMode == Mode.ForcedDownload)
         {
+            // FHorse --
+            FHClose();
+            // --------
             AutoUpdater.Exit();
             return;
         }
@@ -332,5 +352,16 @@ internal partial class DownloadUpdateDialog : Form
 
         _webClient.CancelAsync();
         DialogResult = DialogResult.Cancel;
+        // FHorse --
+        FHClose();
+        // --------
     }
+
+    // FHorse --
+    private void FHClose()
+    {
+        dresult = DialogResult;
+        ended = true;
+    }
+    // --------
 }
