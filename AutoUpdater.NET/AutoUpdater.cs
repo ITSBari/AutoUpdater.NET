@@ -709,11 +709,9 @@ public static class AutoUpdater
             Thread t = new Thread(() => Application.Run(downloadDialog));
 
             t.Start();
-            while (!DownloadUpdateDialog.ended)
-            {
-                Thread.Sleep(100);
-            }
-            return DownloadUpdateDialog.dresult == DialogResult.OK;
+            Thread.Sleep(100);
+            t.Join();
+            return downloadDialog.DialogResult == DialogResult.OK;
             // ---------
             //return downloadDialog.ShowDialog(_owner).Equals(DialogResult.OK);
         }
