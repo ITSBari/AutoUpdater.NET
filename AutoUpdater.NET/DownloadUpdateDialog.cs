@@ -19,7 +19,7 @@ internal partial class DownloadUpdateDialog : Form
     private readonly UpdateInfoEventArgs _args;
 
     private DateTime _startedAt;
-   
+
     private string _tempFile;
 
     private MyWebClient _webClient;
